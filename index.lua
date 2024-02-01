@@ -2,24 +2,24 @@
 local characters = {}
 
 
-Char = {}
+Character = {}
 
-function Char.new(id, name, money)
+function Character.new(id, name, money)
     local self = {
         id = id,
         name = name,
         money = money,
         eventListeners = {}
     }
-    setmetatable(self, { __index = Char })
+    setmetatable(self, { __index = Character })
     return self
 end
 
-function Char:displayInfo()
+function Character:displayInfo()
     print(string.format("ID: %d, Name: %s, Money: %d$", self.id, self.name, self.money))
 end
 
-function Char:displayInfoById(id)
+function Character:displayInfoById(id)
     local character = characters[id]
     if character then
         character:displayInfo()
@@ -28,14 +28,14 @@ function Char:displayInfoById(id)
     end
 end
 
-function Char:addEventListener(event, callback)
+function Character:addEventListener(event, callback)
     if not self.eventListeners[event] then
         self.eventListeners[event] = {}
     end
     table.insert(self.eventListeners[event], callback)
 end
 
-function Char:dispatchEvent(event, ...)
+function Character:dispatchEvent(event, ...)
     if self.eventListeners[event] then
         for _, callback in ipairs(self.eventListeners[event]) do
             callback(self, ...)
@@ -43,13 +43,13 @@ function Char:dispatchEvent(event, ...)
     end
 end
 
-function Char:giveMoney(amount)
+function Character:giveMoney(amount)
     self.money = self.money + amount
     self:dispatchEvent("updateMoney", amount)
 end
 
 
-local client = Char.new(1, "client", 350)
+local client = Character.new(1, "client", 350)
 characters[client.id] = client
 
 
